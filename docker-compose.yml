@@ -2,25 +2,11 @@ version: '3.5'
 services:
   dify2openai:
     container_name: dify2openai
-    build:
-      context: .
-      dockerfile: Dockerfile
-    environment: 
-      - DIFY_API_URL=https://dify.baibaomen.com/v1
-      - BOT_TYPE=Chat
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.dify2openai.rule=Host(`dify2openai.baibaomen.com`)"
-      - "traefik.http.routers.dify2openai.entrypoints=websecure"
-      - "traefik.http.routers.dify2openai.tls.certresolver=myresolver"
-      - "traefik.http.routers.dify2openai-http.rule=Host(`dify2openai.baibaomen.com`)"
-      - "traefik.http.routers.dify2openai-http.entrypoints=web"
-      - "traefik.http.routers.dify2openai-http.middlewares=redirect-to-https"
-      - "traefik.http.services.dify2openai.loadbalancer.server.port=3000"
-    networks:
-      - traefik-net
+    image: baibaomen/dify2openai:latest
+    network_mode: bridge
+    ports:
+      - "8083:3000"
     restart: always
-
-networks:
-  traefik-net:
-    external: true
+    environment: 
+      - DIFY_API_URL=http://192 168.13.241/v1
+      - BOT_TYPE=Chat
